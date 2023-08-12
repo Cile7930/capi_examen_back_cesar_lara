@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserDomicilio;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with('domicilioUser')->get();
+        $usersWithAge = $users->map(function ($user) {
+            $user->edad = $user->edad(); // Calcula la edad usando el método en el modelo
+            return $user;
+        });
+        return response()->json($users);
+
+    
+
+    return response()->json($usersWithAge);
     }
 
     /**
